@@ -94,16 +94,16 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                     printLabel(labels);
 
                     //Voldoende wachten zodat label afgeprint is voordat we een nieuwe printer-operatie starten.
-                    Thread.sleep(5000);
+                    Thread.sleep(15000);
 					
-					SGD.SET("device.languages", "line_print", thePrinterConn);
+					//SGD.SET("device.languages", "line_print", thePrinterConn);
 
                     thePrinterConn.close();
 
                     callbackContext.success();
                 } else {
                     Log.e(LOG_TAG, "Printer not ready");
-                    callbackContext.error("Printer is nog niet klaar.");
+                    callbackContext.error("Tiskalnik še ni pripravljen.");
                 }
 
             }
@@ -113,19 +113,19 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
 
             //De connectie tussen de printer & het toestel is verloren gegaan.
             if (e.getMessage().toLowerCase().contains("broken pipe")) {
-                callbackContext.error("De connectie tussen het toestel en de printer is verloren gegaan. Probeer opnieuw alstublieft.");
+                callbackContext.error("Povezava med napravo in tiskalnikom je bila prekinjena. Poskusite znova.");
 
                 //Geen printer gevonden via bluetooth, -1 teruggeven zodat er gezocht wordt naar nieuwe printers.
             } else if (e.getMessage().toLowerCase().contains("socket might closed")) {
                 int SEARCH_NEW_PRINTERS = -1;
                 callbackContext.error(SEARCH_NEW_PRINTERS);
             } else {
-                callbackContext.error("Onbekende printerfout opgetreden. Herstart de printer en probeer opnieuw alstublieft.");
+                callbackContext.error("Prišlo je do neznane napake tiskalnika. Znova zaženite tiskalnik in poskusite znova.");
             }
 
         } catch (ZebraPrinterLanguageUnknownException e) {
             Log.e(LOG_TAG, "ZebraPrinterLanguageUnknown exception: " + e.getMessage());
-            callbackContext.error("Onbekende printerfout opgetreden. Herstart de printer en probeer opnieuw alstublieft.");
+            callbackContext.error("Prišlo je do neznane napake tiskalnika. Znova zaženite tiskalnik in poskusite znova.");
         } catch (Exception e) {
             Log.e(LOG_TAG, "Exception: " + e.getMessage());
             callbackContext.error(e.getMessage());
@@ -159,7 +159,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
             return true;
         } else {
             Log.d(LOG_TAG, "Bluetooth is disabled...");
-            callbackContext.error("Bluetooth staat niet aan.");
+            callbackContext.error("Bluetooth ni vklopljen.");
         }
 
         return false;
@@ -185,6 +185,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                 Log.d(LOG_TAG, "Storing label on printer...");
                 printer.storeImage("wgkimage.pcx", zebraimage, -1, -1);
                 printImageTheOldWay(zebraimage);
+                SGD.SET("device.languages", "line_print", thePrinterConn);
             }
         }
 
@@ -272,7 +273,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                         BluetoothDiscoverer.findPrinters(cordova.getActivity().getApplicationContext(), ZebraBluetoothPrinter.this);
                     } else {
                         Log.d(LOG_TAG, "Bluetooth is disabled...");
-                        callbackContext.error("Bluetooth staat niet aan.");
+                        callbackContext.error("Bluetooth ni vklopljen.");
                     }
 
                 } catch (ConnectionException e) {
@@ -295,7 +296,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                     Log.d(LOG_TAG, "Successfully found connected printer with name " + printerName);
                     callbackContext.success(printerName);
                 } else {
-                    callbackContext.error("Geen printer gevonden.");
+                    callbackContext.error("Ni najdenega tiskalnika. Če težave ne odpravite, ponovno zaženite tiskalnik.");
                 }
             }
         }).start();
@@ -334,7 +335,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
     public void discoveryFinished() {
         Log.d(LOG_TAG, "Finished searching for printers...");
         if (!printerFound) {
-            callbackContext.error("Geen printer gevonden. Herstart de printer indien dit probleem zich blijft voordoen.");
+            callbackContext.error("Ni najdenega tiskalnika. Če težave ne odpravite, ponovno zaženite tiskalnik.");
         }
     }
 
