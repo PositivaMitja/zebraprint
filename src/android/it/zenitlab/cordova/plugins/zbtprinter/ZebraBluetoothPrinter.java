@@ -194,7 +194,7 @@ int labelSleep = Integer.valueOf(labelHeight / 400) * 1000;
                 SGD.SET("device.languages", "line_print", thePrinterConn);
             }
 
-            Thread.sleep(Integer.valueOf(labelHeight / 300) * 1000);
+            Thread.sleep(labelSleep);
             if (i > 0)
             {
                 Thread.sleep(2000);
