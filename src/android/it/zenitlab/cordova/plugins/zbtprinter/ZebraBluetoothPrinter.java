@@ -137,7 +137,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
         Log.d(LOG_TAG, "Initializing printer...");
         printer = ZebraPrinterFactory.getInstance(thePrinterConn);
         String printerLanguage = SGD.GET("device.languages", thePrinterConn);
-		Log.d(LOG_TAG, "mitja " + printerLanguage);
+
         if (!printerLanguage.contains("zpl")) {
 			// print diff
             SGD.SET("device.languages", "hybrid_xml_zpl", thePrinterConn);
@@ -193,12 +193,10 @@ int labelSleep = Integer.valueOf(labelHeight / 400) * 1000;
                 printImageTheOldWay(zebraimage);
                 SGD.SET("device.languages", "line_print", thePrinterConn);
             }
-Log.d(LOG_TAG, "mitja sleep 1");
+
             Thread.sleep(labelSleep);
-Log.d(LOG_TAG, "mitja sleep " + i);
             if (i > 0)
             {
-Log.d(LOG_TAG, "mitja sleep 2");
                 Thread.sleep(2000);
             }
         }
