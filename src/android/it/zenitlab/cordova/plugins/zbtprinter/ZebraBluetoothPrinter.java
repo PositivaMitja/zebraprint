@@ -168,7 +168,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
 
     private void printLabel(JSONArray labels) throws Exception {
         ZebraPrinterLinkOs zebraPrinterLinkOs = ZebraPrinterFactory.createLinkOsPrinter(printer);
-
+Log.d(LOG_TAG, "mitja labels " + labels.length());
         for (int i = labels.length() - 1; i >= 0; i--) {
             String base64Image = labels.get(i).toString();
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
@@ -193,10 +193,12 @@ int labelSleep = Integer.valueOf(labelHeight / 400) * 1000;
                 printImageTheOldWay(zebraimage);
                 SGD.SET("device.languages", "line_print", thePrinterConn);
             }
-
+Log.d(LOG_TAG, "mitja sleep 1");
             Thread.sleep(labelSleep);
+Log.d(LOG_TAG, "mitja sleep " + i);
             if (i > 0)
             {
+Log.d(LOG_TAG, "mitja sleep 2");
                 Thread.sleep(2000);
             }
         }
