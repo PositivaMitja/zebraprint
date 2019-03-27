@@ -98,7 +98,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                     //Thread.sleep(15000);
 					
 					//SGD.SET("device.languages", "line_print", thePrinterConn);
-
+Log.d(LOG_TAG, "mitja end");
                     thePrinterConn.close();
 
                     callbackContext.success();
@@ -175,13 +175,16 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
 
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             ZebraImageAndroid zebraimage = new ZebraImageAndroid(decodedByte);
+Log.d(LOG_TAG, "mitja " + zebraimage.getHeight());
 int labelHeight = Integer.valueOf(zebraimage.getHeight());
+int labelSleep = Integer.valueOf(labelHeight / 400) * 1000;
+Log.d(LOG_TAG, "mitja " + labelSleep);
 
             //Lengte van het label eerst instellen om te kleine of te grote afdruk te voorkomen
             if (zebraPrinterLinkOs != null && i == labels.length() - 1) {
                 setLabelLength(zebraimage);
             }
-
+Log.d(LOG_TAG, "mitja start");
             if (zebraPrinterLinkOs != null) {
                 printer.printImage(zebraimage, 20, 20, zebraimage.getWidth(), zebraimage.getHeight(), false);
             } else {
@@ -190,6 +193,7 @@ int labelHeight = Integer.valueOf(zebraimage.getHeight());
                 printImageTheOldWay(zebraimage);
                 SGD.SET("device.languages", "line_print", thePrinterConn);
             }
+Log.d(LOG_TAG, "mitja sleep");
             Thread.sleep(Integer.valueOf(labelHeight / 300) * 1000);
         }
 
