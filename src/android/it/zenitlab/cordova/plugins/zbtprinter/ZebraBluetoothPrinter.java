@@ -39,6 +39,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
     private PrinterStatus printerStatus;
     private ZebraPrinter printer;
     private final int MAX_PRINT_RETRIES = 1;
+    private int speed;
 
     public ZebraBluetoothPrinter() {
 
@@ -53,6 +54,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                 JSONArray labels = args.getJSONArray(0);
                 String MACAddress = args.getString(1);
                 sendImage(labels, MACAddress);
+                speed = args.getString(2);
             } catch (IOException e) {
                 Log.e(LOG_TAG, e.getMessage());
                 e.printStackTrace();
@@ -168,7 +170,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
 
     private void printLabel(JSONArray labels) throws Exception {
         ZebraPrinterLinkOs zebraPrinterLinkOs = ZebraPrinterFactory.createLinkOsPrinter(printer);
-Log.d(LOG_TAG, "mitja labels " + labels.length());
+
         for (int i = labels.length() - 1; i >= 0; i--) {
             String base64Image = labels.get(i).toString();
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
@@ -177,7 +179,7 @@ Log.d(LOG_TAG, "mitja labels " + labels.length());
             ZebraImageAndroid zebraimage = new ZebraImageAndroid(decodedByte);
 
 int labelHeight = Integer.valueOf(zebraimage.getHeight());
-int labelSleep = Integer.valueOf(labelHeight / 400) * 1000;
+int labelSleep = (Integer.valueOf(labelHeight / 400) * 1000) * speed;
 
 
             //Lengte van het label eerst instellen om te kleine of te grote afdruk te voorkomen
