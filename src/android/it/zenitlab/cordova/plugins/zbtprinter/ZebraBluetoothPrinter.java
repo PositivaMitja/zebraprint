@@ -60,7 +60,7 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
                 number = args.getInt(4);
                 for (int i = 0; i < number; i++)
                 {
-                    labels.add(args.getJSONArray(0));
+                    labels.put(args.getJSONArray(0));
                 }
                 sendImage(labels, MACAddress);
             } catch (IOException e) {
