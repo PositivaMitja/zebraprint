@@ -40,6 +40,8 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
     private ZebraPrinter printer;
     private final int MAX_PRINT_RETRIES = 1;
     private int speed;
+    private int time;
+    private int number;
 
     public ZebraBluetoothPrinter() {
 
@@ -53,8 +55,10 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
             try {
                 JSONArray labels = args.getJSONArray(0);
                 String MACAddress = args.getString(1);
-                sendImage(labels, MACAddress);
                 speed = args.getInt(2);
+                time = args.getInt(3);
+                number = args.getInt(4);
+                sendImage(labels, MACAddress);
             } catch (IOException e) {
                 Log.e(LOG_TAG, e.getMessage());
                 e.printStackTrace();
@@ -93,7 +97,11 @@ public class ZebraBluetoothPrinter extends CordovaPlugin implements DiscoveryHan
 
                 if (isPrinterReady) {
 
-                    printLabel(labels);
+                    for (int i = 0; i < number, i++)
+                    {
+                        printLabel(labels);
+                        Thread.sleep(1000 * time);
+                    }
 
                     //Voldoende wachten zodat label afgeprint is voordat we een nieuwe printer-operatie starten.
 
